@@ -14,4 +14,26 @@ for (var i = 0; i < links.length; i++) {
     }
 }
 
+(function() {
+    // Load the script
+    var script = document.createElement("SCRIPT");
+    script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
+    script.type = 'text/javascript';
+    script.onload = function() {
+        var $ = window.jQuery;
+        for (var i = 0; i < titles.length; ++i) {
+            $.ajax({
+                url: 'https://apis.paralleldots.com/v5/emotion',
+                data: `text=${titles[i]}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`,
+                type: 'POST',
+                success: function (data) {
+                alert(JSON.stringify(data));
+                },
+            })
+        }
+    };
+
+    document.getElementsByTagName("head")[0].appendChild(script);
+})();
+
 
