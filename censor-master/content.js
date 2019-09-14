@@ -14,26 +14,19 @@ for (var i = 0; i < links.length; i++) {
     }
 }
 
-(function() {
-    // Load the script
-    var script = document.createElement("SCRIPT");
-    script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
-    script.type = 'text/javascript';
-    script.onload = function() {
-        var $ = window.jQuery;
-        for (var i = 0; i < titles.length; ++i) {
-            $.ajax({
-                url: 'https://apis.paralleldots.com/v5/emotion',
-                data: `text=${titles[i]}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`,
-                type: 'POST',
-                success: function (data) {
-                alert(JSON.stringify(data));
-                },
-            })
-        }
-    };
+httpRequests = [];
+httpRequests.length = titles.length;
 
-    document.getElementsByTagName("head")[0].appendChild(script);
-})();
+for (i = 0; i < titles.length; i++) {
+    httpRequests[i] = new XMLHttpRequest();
+    httpRequests[i].open('POST', 'https://cors-anywhere.herokuapp.com/https://apis.paralleldots.com/v4/emotion', true);
+    httpRequests[i].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    httpRequests[i].onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+            console.log("Request number " + i.toString() + ": " + this.response);
+        }
+    }
+    httpRequests[i].send(`text=${titles[i]}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`);
+}
 
 
