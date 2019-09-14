@@ -1,5 +1,6 @@
 var links = document.getElementsByTagName('a');
-var titles = []
+var titles = [];
+var tagOrderMap = [];
 
 for (var i = 0; i < links.length; i++) {
     if(links[i].href.includes("news.google.com/articles")){
@@ -7,6 +8,7 @@ for (var i = 0; i < links.length; i++) {
             if(!links[i].href.includes("accounts.google.com")){
                 if(links[i].innerText !== ""){
                     titles.push(links[i].innerText);
+                    tagOrderMap.push(i);
                     console.log(links[i].innerText);
                 }
             }
@@ -17,14 +19,10 @@ for (var i = 0; i < links.length; i++) {
 httpRequestsArr = [];
 httpRequestsArr.length = titles.length;
 
-SuperHackyRequestCounter = 0;
 
-function DeleteUnwanted() {
-    // Delete unwanted elements of HTML that contain bad news
-    alert("Finished!")
+function censorTag(j) {
+    document.getElementById(tagOrderMap[j]).style.backgroundColor = "black";
 }
-
-
 
 function requestHandler(u, titles) {
     httpRequests = new XMLHttpRequest();
@@ -33,7 +31,8 @@ function requestHandler(u, titles) {
     httpRequests.onload = function() {
         if (this.status >= 200 && this.status < 400) {
             console.log("Request " + u + ": " + this.response);
-
+            console.log("Order of A" + tagOrderMap[u]);
+            censorTag(u); // SMOL HACK
         }
     }
     httpRequests.send(`text=${titles[u]}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`);
