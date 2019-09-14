@@ -23,7 +23,7 @@ for (var i = 0; i < links.length; i++) {
         var $ = window.jQuery;
         for (var i = 0; i < titles.length; ++i) {
             $.ajax({
-                url: 'https://apis.paralleldots.com/v5/emotion',
+                url: 'https://apis.paralleldots.com/v4/taxonomy',
                 data: `text=${titles[i]}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`,
                 type: 'POST',
                 success: function (data) {
