@@ -1,0 +1,20 @@
+{
+    "name": "Censor App",
+
+    "description": "Self-enforced Censorship app that promotes mental health",
+    
+    "manifest_version": 2,
+
+    "version": "1.0",
+
+    "content_scripts": [
+        {
+          "matches": [
+            "https://news.google.com/*",
+            "http://news.google.com/*"
+          ],
+
+          "js": ["content.js"]
+        }
+      ]
+}
