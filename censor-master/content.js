@@ -14,19 +14,33 @@ for (var i = 0; i < links.length; i++) {
     }
 }
 
-httpRequests = [];
-httpRequests.length = titles.length;
+httpRequestsArr = [];
+httpRequestsArr.length = titles.length;
 
-for (i = 0; i < titles.length; i++) {
-    httpRequests[i] = new XMLHttpRequest();
-    httpRequests[i].open('POST', 'https://cors-anywhere.herokuapp.com/https://apis.paralleldots.com/v4/emotion', true);
-    httpRequests[i].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    httpRequests[i].onload = function() {
+SuperHackyRequestCounter = 0;
+
+function DeleteUnwanted() {
+    // Delete unwanted elements of HTML that contain bad news
+    alert("Finished!")
+}
+
+
+
+function requestHandler(u, titles) {
+    httpRequests = new XMLHttpRequest();
+    httpRequests.open('POST', 'https://cors-anywhere.herokuapp.com/https://apis.paralleldots.com/v4/emotion', true);
+    httpRequests.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    httpRequests.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            console.log("Request number " + i.toString() + ": " + this.response);
+            console.log("Request " + u + ": " + this.response);
+
         }
     }
-    httpRequests[i].send(`text=${titles[i]}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`);
+    httpRequests.send(`text=${titles[u]}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`);
+}
+
+for (i = 0; i < titles.length; i++) {
+    requestHandler(i, titles);
 }
 
 
