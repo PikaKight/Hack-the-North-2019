@@ -14,7 +14,7 @@
             "http://news.google.com/*"
           ],
 
-          "js": ["content.js"]
+          "js": ["content.js", "jquery.js"]
         }
       ]
 }
