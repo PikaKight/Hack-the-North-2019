@@ -1,4 +1,4 @@
-function main() {
+window.onload = function() {
 
 var links = document.getElementsByTagName('a');
 var titles = [];
@@ -20,6 +20,9 @@ for (var i = 0; i < links.length; i++) {
 
 function censorTag(j, sentimentData) {
     j.style.backgroundColor = "rgb(32, 33, 36)";
+    j.style.transition = "all 0.3"; // TODO TEST DURATION
+    j.onmouseover = function() {j.style.backgroundColor = null}
+    j.onmouseout = function() {j.style.backgroundColor = "rgb(32, 33, 36)"}
 }
 
 function requestHandler(u, titles) {
@@ -35,7 +38,7 @@ function requestHandler(u, titles) {
         }
     }
 
-    var api_keys = ["5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ", "LIjMokIVHOugoE2hZz05YnK4kEnbvWlSq8uSTuVDLhM"];
+    var api_keys = ["5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ", "LIjMokIVHOugoE2hZz05YnK4kEnbvWlSq8uSTuVDLhM", "vOI8Ghq3vZa5gMr1aD0Nx5AAtgIglE3DnEm9Emt49PM", "56XXL2sWgeHpLWcGbBfXxPsHVwctP34TnR1C2mgyXmE", "iDFzBUlrvxAUxSRlRBW3CW7yx31VVQZtI1xUrwduqhs"];
     var rand_key = api_keys[Math.round(Math.random(0, api_keys.length))]
 
     httpRequests.send(`text=${titles[u].innerText}&api_key=${rand_key}`);
@@ -47,5 +50,3 @@ for (i = 0; i < titles.length; i++) {
 }
 
 }
-
-window.onload = main;

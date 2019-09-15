@@ -14,8 +14,6 @@
             "http://news.google.com/*"
           ],
 
-          "run_at": "document_end",
-
           "js": ["content.js"]
         }
       ]
