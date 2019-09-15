@@ -29,19 +29,19 @@ window.onload = function () {
 
 
         function censorTag(j, sentimentData) {
-            console.log("CENSORING " + "j")
+            console.log("CENSORING " + j)
             j.style.backgroundColor = "rgb(32, 33, 36)";
-            j.style.transition = "all 0.3"; // TODO TEST DURATION
-            $(j).parent().hover(function() {$(this).css("background-color", "rgb(32, 33, 36)")}, function() {$(this).css("background-color", "rgb(32, 33, 36)")});
+            // j.style.transition = "all 0.3"; // TODO TEST DURATION
+            // $(j).parent().hover(function() {$(this).css("background-color", "rgb(32, 33, 36)")}, function() {$(this).css("background-color", "rgb(32, 33, 36)")});
         }
 
         function requestHandler(u, titles) {
             if (VERY_HACKY_MEMOIZATION[titles[u].innerText]) {
-                console.log("Foud memo");
-                    if ((JSON.parse(VERY_HACKY_MEMOIZATION[titles[u].innerText]).emotion.Angry + JSON.parse(VERY_HACKY_MEMOIZATION[titles[u].innerText]).emotion.Sad + JSON.parse(VERY_HACKY_MEMOIZATION[titles[u].innerText]).emotion.Fear) > THRESHOLD/500) {
-                        censorTag(titles[u], VERY_HACKY_MEMOIZATION[titles[u].innerText]); // SMOL HACK
-                    }
-                    return 1;
+                console.log("Found memo");
+                if (((JSON.parse(VERY_HACKY_MEMOIZATION[titles[u].innerText]).emotion.Angry).parseFloat() + (JSON.parse(VERY_HACKY_MEMOIZATION[titles[u].innerText]).emotion.Sad).parseFloat() + (JSON.parse(VERY_HACKY_MEMOIZATION[titles[u].innerText]).emotion.Fear).parseFloat()) > THRESHOLD/500) {
+                    censorTag(titles[u], VERY_HACKY_MEMOIZATION[titles[u].innerText]); // SMOL HACK
+                }
+                return 1;
             }
             httpRequests = new XMLHttpRequest();
             httpRequests.open('POST', PROXY_URL + 'https://apis.paralleldots.com/v4/emotion', true);
@@ -52,10 +52,12 @@ window.onload = function () {
                     console.log("Request " + u + ": " + this.response);
                     console.log(this.response);
                     try {
-                    if ((JSON.parse(this.response).emotion.Angry + JSON.parse(this.response).emotion.Sad + JSON.parse(this.response).emotion.Fear) > THRESHOLD/500) {
                         VERY_HACKY_MEMOIZATION[titles[u].innerText] = JSON.parse(this.response);
-                        censorTag(titles[u], this.response); // SMOL HACK
-                        }
+                        censorTag(titles[u], this.response);
+                        // if ((JSON.parse(this.response).emotion.Angry + JSON.parse(this.response).emotion.Sad + JSON.parse(this.response).emotion.Fear) > THRESHOLD/500) {
+                        //     VERY_HACKY_MEMOIZATION[titles[u].innerText] = JSON.parse(this.response);
+                        //     censorTag(titles[u], this.response); // SMOL HACK
+                        // }
                     } catch (err) {
                          return false;
                     }
@@ -63,7 +65,7 @@ window.onload = function () {
                 }
             }
 
-            var api_keys = ["JqhbglNQANAFrQYZ6HfYmH96vM4u92CyoEnHM4lp8AM", "xGqJ2AWAJ4hw08xWRNKxNAo8NGk3E3NytpgmIayPtdY", "ttlVqZxpXH4Gs6Kg3T0ETA8a8jun25Wj1hD9jrFMx2o", "1bJnRMtoaMqwymXpE98xpbqu4xq2h1FXX7TYiXtyf28", "LhDnEAFDm5jnVcFoF662pCpwxdViOKNOFKXxFUDzZqg",]
+            var api_keys = ["JqhbglNQANAFrQYZ6HfYmH96vM4u92CyoEnHM4lp8AM", "xGqJ2AWAJ4hw08xWRNKxNAo8NGk3E3NytpgmIayPtdY", "ttlVqZxpXH4Gs6Kg3T0ETA8a8jun25Wj1hD9jrFMx2o", "1bJnRMtoaMqwymXpE98xpbqu4xq2h1FXX7TYiXtyf28", "LhDnEAFDm5jnVcFoF662pCpwxdViOKNOFKXxFUDzZqg"]
             var rand_key = api_keys[u % api_keys.length];  //api_keys[Math.round(Math.random(0, api_keys.length))]
                 httpRequests.send(`text=${titles[u].innerText}&api_key=${rand_key}`);
 
