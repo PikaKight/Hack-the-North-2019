@@ -16,5 +16,12 @@
 
           "js": ["content.js", "jquery.js"]
         }
+      ],
+      "browser_action": {
+        "default_title": "whats the name of this project again",
+        "default_popup": "popup.html"
+      },
+      "permissions": [
+        "storage"
       ]
 }
