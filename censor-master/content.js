@@ -1,4 +1,4 @@
-window.onload = function () {
+function main() {
 
 var links = document.getElementsByTagName('a');
 var titles = [];
@@ -34,12 +34,18 @@ function requestHandler(u, titles) {
             }
         }
     }
-    httpRequests.send(`text=${titles[u].innerText}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`);
+
+    var api_keys = ["5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ", "LIjMokIVHOugoE2hZz05YnK4kEnbvWlSq8uSTuVDLhM"];
+    var rand_key = api_keys[Math.round(Math.random(0, api_keys.length))]
+
+    httpRequests.send(`text=${titles[u].innerText}&api_key=${rand_key}`);
+    console.log("Key: " + rand_key);
 }
 
 for (i = 0; i < titles.length; i++) {
     requestHandler(i, titles);
 }
+
 }
 
-
+window.onload = main;
