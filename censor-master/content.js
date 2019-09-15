@@ -1,3 +1,5 @@
+window.onload = function () {
+
 var links = document.getElementsByTagName('a');
 var titles = [];
 var tagOrderMap = [];
@@ -7,8 +9,7 @@ for (var i = 0; i < links.length; i++) {
         if(!links[i].href.includes("myaccount.google.com")){
             if(!links[i].href.includes("accounts.google.com")){
                 if(links[i].innerText !== ""){
-                    titles.push(links[i].innerText);
-                    tagOrderMap.push(i);
+                    titles.push(links[i]);
                     console.log(links[i].innerText);
                 }
             }
@@ -16,12 +17,9 @@ for (var i = 0; i < links.length; i++) {
     }
 }
 
-httpRequestsArr = [];
-httpRequestsArr.length = titles.length;
 
-
-function censorTag(j) {
-    document.getElementById(tagOrderMap[j]).style.backgroundColor = "black";
+function censorTag(j, sentimentData) {
+    j.style.backgroundColor = "rgb(32, 33, 36)";
 }
 
 function requestHandler(u, titles) {
@@ -31,15 +29,17 @@ function requestHandler(u, titles) {
     httpRequests.onload = function() {
         if (this.status >= 200 && this.status < 400) {
             console.log("Request " + u + ": " + this.response);
-            console.log("Order of A" + tagOrderMap[u]);
-            censorTag(u); // SMOL HACK
+            if ((JSON.parse(this.response).emotion.Angry + JSON.parse(this.response).emotion.Sad + JSON.parse(this.response).emotion.Fear) > 0.5) {
+                censorTag(titles[u], this.response); // SMOL HACK
+            }
         }
     }
-    httpRequests.send(`text=${titles[u]}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`);
+    httpRequests.send(`text=${titles[u].innerText}&api_key=5pC6m1e0wOLBdkwtOcfzesFReIsbFy5fTDhhJHQoEnQ`);
 }
 
 for (i = 0; i < titles.length; i++) {
     requestHandler(i, titles);
+}
 }
 
 
